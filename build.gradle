@@ -18,6 +18,24 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "MyGitHubPackages"
+            url = uri("https://maven.pkg.github.com/MagicMaggot/spring-shift-test")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
